@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameGod : MonoBehaviour {
 
@@ -78,6 +79,8 @@ public class GameGod : MonoBehaviour {
         } else if (pos != correctPositions[stepIndex]) {
             hasLost = true;
             lostText.SetActive(true);
+            lostText.GetComponent<TextMeshPro>().text = "Error in Step " + stepIndex + "\n" +
+                "You were off by " + (pos - correctPositions[stepIndex]);
         }
 
     }
