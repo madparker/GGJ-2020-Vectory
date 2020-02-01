@@ -6,9 +6,9 @@ public class GameGod : MonoBehaviour {
 
     public Transform ball;
 
-    public Rule[] ruleList;
+    public Rule[] ruleArr;
 
-    public Vector2[] posArr;
+    public Rule currentRule;
 
     public static GameGod me;
     public void Awake() {
@@ -21,7 +21,8 @@ public class GameGod : MonoBehaviour {
     }
 
     void Start() {
-        ruleList = new Rule[1]{new MoveRightRule()};
+        ruleArr = new Rule[1]{new MoveRightRule()};
+        currentRule = ruleArr[0];
     }
 
     void Update() {
