@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class VisualizeRule : MonoBehaviour
 {
@@ -19,10 +20,13 @@ public class VisualizeRule : MonoBehaviour
 
         //ResultingPositions = currentRule.GetPositions(ballTrans.position);
 
+        int i = 1;
         foreach(Vector2 vec in GameGod.me.correctPositions){
             GameObject position =
                 Instantiate<GameObject>(Resources.Load<GameObject>("UI/PreviewPosition"));
             position.transform.position = vec;
+            position.GetComponentInChildren<TextMeshPro>().text = "" + i;
+            i++;
         }
     }
 
