@@ -7,10 +7,15 @@ public class GameGod : MonoBehaviour {
     public Transform ball;
 
     public Rule[] ruleArr;
+    public PlayerRule[] playerRuleArr;
 
     public int ruleIndex;
 
     public static GameGod me;
+
+    public static int stepNum = 10;
+
+    public bool hasLost;
     public void Awake() {
         if (me != null) {
             Debug.LogError("TOO MANY GODS THEY MUST FIGHT");
@@ -20,6 +25,7 @@ public class GameGod : MonoBehaviour {
         me = this;
 
         ruleArr = new Rule[1] { new MoveRightRule() };
+        playerRuleArr = new PlayerRule[1] { new Lvl1() };
         ruleIndex = 0;
     }
 
@@ -29,6 +35,11 @@ public class GameGod : MonoBehaviour {
     void Update() {
         
     }
+
+    void Step() {
+
+    }
+
     
     public Rule GetCurrentRule(){
         return ruleArr[ruleIndex];
@@ -44,8 +55,13 @@ public class Rule {
     }
 }
 
-public class MoveRightRule : Rule
-{
+public class PlayerRule {
+    public virtual Vector2 Step(Vector2 startPos) {
+        return Vector2.zero;
+    }
+}
+
+public class MoveRightRule : Rule {
     public override Vector2[] GetPositions(Vector2 startPos) {
         var stepNum = 5;
         var posArr = new Vector2[stepNum];
