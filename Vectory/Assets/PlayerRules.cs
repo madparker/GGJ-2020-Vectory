@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Lvl1 : PlayerRule {
     public override Vector2 Step(Vector2 currentPos) {
-        return Vector2.zero;
+        return currentPos + Vector2.right;
     }
 }
 

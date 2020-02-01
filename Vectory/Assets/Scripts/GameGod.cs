@@ -43,6 +43,7 @@ public class GameGod : MonoBehaviour {
 
     public void Step() {
         var pos = playerRuleArr[ruleIndex].Step(ball.transform.position);
+        ball.transform.position = pos;
         stepIndex++;
         if (stepIndex >= stepNum) {
             if (!hasLost) winText.SetActive(true);
@@ -76,7 +77,7 @@ public class PlayerRule {
 
 public class MoveRightRule : Rule {
     public override Vector2[] GetPositions(Vector2 startPos) {
-        var stepNum = 5;
+        var stepNum = GameGod.stepNum;
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++) {
             posArr[i] = startPos;
