@@ -9,7 +9,7 @@ public class GameGod : MonoBehaviour {
 
     public Transform ball;
 
-    public Rule[] ruleArr;
+    public Level[] levelArray;
     public PlayerRule[] playerRuleArr;
 
     public int ruleIndex = 0;
@@ -37,8 +37,8 @@ public class GameGod : MonoBehaviour {
             return;
         }
         me = this;
-        ruleArr = new Rule[4] 
-            { new MoveRight(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit(), new AccelerateRight()};
+        levelArray = new Level[1] { };
+            //{ new MoveRightOne(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit(), new AccelerateRight()};
         playerRuleArr = new PlayerRule[4] 
             { new Lv1(), new Lv2(), new Lv3(), new Lv4()};
         InitLevel();
@@ -93,19 +93,24 @@ public class GameGod : MonoBehaviour {
     }
     public void InitLevel(){
         ball.transform.position = Vector2.zero;
-        correctPositions = ruleArr[ruleIndex].GetPositions(ball.transform.position);
+
+        levelArray[ruleIndex].Init();
+
+        print(levelArray[ruleIndex]);
+
+        correctPositions = levelArray[ruleIndex].GetPositions(ball.transform.position);
         winText.SetActive(false);
         lostText.SetActive(false);
         VisualizeRule.me.InitLevel();
         stepIndex = 0;
         hasWon = false;
         hasLost = false;
-        stepNum = ruleArr[ruleIndex].stepNum;
+        stepNum = levelArray[ruleIndex].stepNum;
     }
 
     public void NextLevel(){
         ruleIndex++;
-        if (ruleIndex < ruleArr.Length)
+        if (ruleIndex < levelArray.Length)
         {
             InitLevel();
             testing = true;
@@ -131,11 +136,6 @@ public class GameGod : MonoBehaviour {
         CamControl.me.DeadCam(correctPositions[stepIndex]);
 
     }
-    
-    public Rule GetCurrentRule(){
-        return ruleArr[ruleIndex];
-    }
-
 }
 
 

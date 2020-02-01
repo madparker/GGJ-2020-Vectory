@@ -41,6 +41,11 @@ public class VisualizeRule : MonoBehaviour
         prevHolder.name = "Preview Position Holder";
 
         int i = 1;
+
+
+        print(GameGod.me);
+        print(GameGod.me.correctPositions);
+
         foreach (Vector2 vec in GameGod.me.correctPositions)
         {
             GameObject position =

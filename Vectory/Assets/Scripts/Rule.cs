@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Rule
+public class Rule
 {
     public string name;
     public int stepNum = 10;
 
-    public abstract void Init();
+    public virtual void Init(){}
 
-    public abstract void Randomize();
+    public virtual void Randomize(){}
 
     public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 inputv, float inputf)
     {
@@ -20,6 +20,7 @@ public abstract class Rule
     {
         return null;
     }
+
     public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 input) {
         return GetPositions(startPos, input, 0f);
     }
@@ -29,21 +30,40 @@ public abstract class Rule
 }
 
 public class PlayerRule {
-    public virtual Vector2 Step(Vector2 currentPos, Vector2 input) {
+    public virtual Vector2 BallMove(Vector2 currentPos, Vector2 input) {
         return Vector2.zero;
     }
-    public virtual Vector2 Step(Vector2 currentPos) {
-        return Step(currentPos, Vector2.zero);
+    public virtual Vector2 BallMove(Vector2 currentPos) {
+        return BallMove(currentPos, Vector2.zero);
     }
 }
 
-public class MoveRight : Rule {
+public class MoveRightOne : Rule {
+
+    public override Vector2[] GetPositions(Vector2 startPos)
+    {
+        Debug.Log("StepNum: " + stepNum);
+
+        var posArr = new Vector2[stepNum];
+        for (int i = 0; i < stepNum; i++)
+        {
+            posArr[i] = startPos;
+            startPos += Vector2.right;
+        }
+        return posArr;
+    }
+}
+
+public class MoveRightSome : Rule
+{
 
     public override void Init() { }
     public override void Randomize() { }
 
     public override Vector2[] GetPositions(Vector2 startPos, float input)
     {
+        Debug.Log("StepNum: " + stepNum);
+
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
         {
