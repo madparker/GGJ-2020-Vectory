@@ -38,8 +38,12 @@ public class Lv4 : PlayerRule {
 
 }
 
-public class Lv5 : PlayerRule {
-    //
+//public class Lv5 : PlayerRule {
 
-}
+//    public override Vector2 Step(Vector2 currentPos, Vector2 input)
+//    {
+//        return base.Step(currentPos, input);
+//    }
+
+//}
 
