@@ -61,7 +61,7 @@ public class GameGod : MonoBehaviour {
     }
 
     public void Step() {
-        if (hasWon || hasLost)
+        if (hasWon)
             return;
         var pos = playerRuleArr[ruleIndex].Step(ball.transform.position);
         ball.transform.position = pos;
@@ -80,6 +80,7 @@ public class GameGod : MonoBehaviour {
             }
         } else if (pos != correctPositions[stepIndex]) {
             hasLost = true;
+            testing = false;
             lostText.SetActive(true);
         }
 
