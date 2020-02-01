@@ -24,7 +24,7 @@ public class Lv3 : PlayerRule {
     //Move the ball diagonally up and to the left by one unit per step.
     public override Vector2 Step(Vector2 currentPos)
     {
-        return currentPos + (Vector2.up + Vector2.left).normalized;
+        return currentPos + (Vector2.up + Vector2.left);
     }
 
 }
