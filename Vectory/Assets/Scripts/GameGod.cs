@@ -28,6 +28,8 @@ public class GameGod : MonoBehaviour {
     float testTimer; 
     public float testRate = 0.1f;
 
+    public GameObject arrowHead;
+
     public void Awake() {
         if (me != null) {
             Debug.LogError("TOO MANY GODS THEY MUST FIGHT");
@@ -41,6 +43,7 @@ public class GameGod : MonoBehaviour {
             { new Lvl1(), new Lv2(), new Lv3() };
         InitLevel();
 
+        arrowHead.SetActive(false);
     }
 
     void Start() {
@@ -84,6 +87,14 @@ public class GameGod : MonoBehaviour {
             lostText.SetActive(true);
             lostText.GetComponent<TextMeshPro>().text = "Error in Step " + stepIndex + "\n" +
                 "You were off by " + (pos - correctPositions[stepIndex]);
+            arrowHead.SetActive(true);
+            arrowHead.transform.position = correctPositions[stepIndex];
+
+            Vector2 dir = (correctPositions[stepIndex]-pos).normalized;
+            arrowHead.transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+            //arrowHead.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x));
+
+            //arrowHead.transform.Rotate(Vector3.forward, Vector2.Angle(pos, correctPositions[stepIndex]));
         }
 
     }
