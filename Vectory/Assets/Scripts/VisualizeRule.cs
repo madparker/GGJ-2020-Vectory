@@ -6,7 +6,7 @@ public class VisualizeRule : MonoBehaviour
 {
     public Transform ballTrans;
 
-    public Vector2[] ResultingPositions;
+    //public Vector2[] ResultingPositions;
 
     public GameObject ResultUI;
 
@@ -17,9 +17,9 @@ public class VisualizeRule : MonoBehaviour
 
         Rule currentRule = GameGod.me.GetCurrentRule();
 
-        ResultingPositions = currentRule.GetPositions(ballTrans.position);
+        //ResultingPositions = currentRule.GetPositions(ballTrans.position);
 
-        foreach(Vector2 vec in ResultingPositions){
+        foreach(Vector2 vec in GameGod.me.correctPositions){
             GameObject position =
                 Instantiate<GameObject>(Resources.Load<GameObject>("UI/PreviewPosition"));
             position.transform.position = vec;
