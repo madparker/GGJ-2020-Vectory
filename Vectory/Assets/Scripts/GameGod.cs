@@ -93,6 +93,10 @@ public class GameGod : MonoBehaviour {
 
             Vector2 dir = (correctPositions[stepIndex]-pos).normalized;
             arrowHead.transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+            var lin = arrowHead.GetComponent<LineRenderer>();
+            lin.positionCount = 2;
+            lin.SetPosition(0, pos);
+            lin.SetPosition(1, correctPositions[stepIndex] - dir * .1f);
             //arrowHead.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x));
 
             //arrowHead.transform.Rotate(Vector3.forward, Vector2.Angle(pos, correctPositions[stepIndex]));
