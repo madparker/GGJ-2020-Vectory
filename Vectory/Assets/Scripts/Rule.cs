@@ -5,6 +5,8 @@ using UnityEngine;
 public class Rule
 {
     public string name;
+    public int stepNum = 10;
+
     public virtual Vector2[] GetPositions(Vector2 startPos)
     {
         return null;
@@ -19,11 +21,9 @@ public class PlayerRule
     }
 }
 
-public class MoveRightRule : Rule
-{
+public class MoveRight : Rule {
     public override Vector2[] GetPositions(Vector2 startPos)
     {
-        var stepNum = GameGod.stepNum;
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
         {
@@ -38,7 +38,6 @@ public class MoveDiagonalUpLeft : Rule
 {
     public override Vector2[] GetPositions(Vector2 startPos)
     {
-        var stepNum = GameGod.stepNum;
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
         {
@@ -55,7 +54,6 @@ public class MoveDiagonalUpLeftOnUnit : Rule
 {
     public override Vector2[] GetPositions(Vector2 startPos)
     {
-        var stepNum = GameGod.stepNum;
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
         {
@@ -64,6 +62,22 @@ public class MoveDiagonalUpLeftOnUnit : Rule
             Vector2 newDir = new Vector2(-1, 1).normalized;
 
             startPos += newDir;
+        }
+        return posArr;
+    }
+}
+public class AccelerateRight : Rule {
+    public AccelerateRight() {
+        stepNum = 20;
+    }
+
+    public override Vector2[] GetPositions(Vector2 startPos) {
+        var posArr = new Vector2[stepNum];
+        var vel = Vector2.zero;
+        for (int i = 0; i < stepNum; i++) {
+            posArr[i] = startPos;
+            vel += Vector2.right * .1f;
+            startPos += vel;
         }
         return posArr;
     }

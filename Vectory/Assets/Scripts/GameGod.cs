@@ -34,10 +34,10 @@ public class GameGod : MonoBehaviour {
             return;
         }
         me = this;
-        ruleArr = new Rule[3] 
-            { new MoveRightRule(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit()};
-        playerRuleArr = new PlayerRule[3] 
-            { new Lvl1(), new Lv2(), new Lv3() };
+        ruleArr = new Rule[4] 
+            { new MoveRight(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit(), new AccelerateRight()};
+        playerRuleArr = new PlayerRule[4] 
+            { new Lv1(), new Lv2(), new Lv3(), new Lv4()};
         InitLevel();
 
     }
@@ -66,7 +66,7 @@ public class GameGod : MonoBehaviour {
         var pos = playerRuleArr[ruleIndex].Step(ball.transform.position);
         ball.transform.position = pos;
         stepIndex++;
-        if (stepIndex >= stepNum) {
+        if (stepIndex == stepNum-1 && pos == correctPositions[stepIndex]) {
             if (!hasLost)
             {
                 winText.SetActive(true);
@@ -94,6 +94,7 @@ public class GameGod : MonoBehaviour {
         stepIndex = 0;
         hasWon = false;
         hasLost = false;
+        stepNum = ruleArr[ruleIndex].stepNum;
     }
 
     public void NextLevel(){
