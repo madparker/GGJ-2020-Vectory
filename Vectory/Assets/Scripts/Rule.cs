@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rule
+public abstract class Rule
 {
     public string name;
     public int stepNum = 10;
 
+    public abstract void Init();
+
+    public abstract void Randomize();
+
     public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 inputv, float inputf)
+    {
+        return null;
+    }
+
+    public virtual Vector2[] GetPositions(Vector2 startPos)
     {
         return null;
     }
@@ -29,6 +38,10 @@ public class PlayerRule {
 }
 
 public class MoveRight : Rule {
+
+    public override void Init() { }
+    public override void Randomize() { }
+
     public override Vector2[] GetPositions(Vector2 startPos, float input)
     {
         var posArr = new Vector2[stepNum];
@@ -43,8 +56,12 @@ public class MoveRight : Rule {
 
 public class MoveDiagonalUpLeft : Rule
 {
+    public override void Init() { }
+    public override void Randomize() { }
+   
     public override Vector2[] GetPositions(Vector2 startPos, Vector2 input)
     {
+
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
         {
@@ -59,6 +76,10 @@ public class MoveDiagonalUpLeft : Rule
 
 public class MoveDiagonalUpLeftOnUnit : Rule
 {
+
+    public override void Init() { }
+    public override void Randomize() { }
+
     public override Vector2[] GetPositions(Vector2 startPos, Vector2 input)
     {
         var posArr = new Vector2[stepNum];
@@ -73,7 +94,13 @@ public class MoveDiagonalUpLeftOnUnit : Rule
         return posArr;
     }
 }
+
 public class AccelerateRight : Rule {
+
+
+    public override void Init() { }
+    public override void Randomize() { }
+
     public AccelerateRight() {
         stepNum = 20;
     }
