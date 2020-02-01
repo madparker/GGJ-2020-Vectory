@@ -20,6 +20,10 @@ public class GameGod : MonoBehaviour {
     public Vector2[] correctPositions;
 
     int stepIndex = 0;
+
+    bool testing;
+    float testTimer, testRate;
+
     public void Awake() {
         if (me != null) {
             Debug.LogError("TOO MANY GODS THEY MUST FIGHT");
@@ -32,13 +36,25 @@ public class GameGod : MonoBehaviour {
         playerRuleArr = new PlayerRule[1] { new Lvl1() };
         ruleIndex = 0;
         correctPositions = ruleArr[ruleIndex].GetPositions(ball.transform.position);
+        testRate = .1f;
     }
 
     void Start() {
     }
 
     void Update() {
-        
+        if (testing) {
+            testTimer += Time.deltaTime;
+            if (testTimer > testRate) {
+                testTimer = 0;
+                Step();
+            }
+        }
+    }
+
+    public void StartTest() {
+        testing = true;
+
     }
 
     public void Step() {
