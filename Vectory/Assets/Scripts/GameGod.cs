@@ -83,20 +83,8 @@ public class GameGod : MonoBehaviour {
 
             }
         } else if (pos != correctPositions[stepIndex]) {
-            hasLost = true;
-            testing = false;
-            lostText.SetActive(true);
-            lostText.GetComponent<TextMeshPro>().text = "Error in Step " + stepIndex + "\n" +
-                "You were off by " + (pos - correctPositions[stepIndex]);
-            arrowHead.SetActive(true);
-            arrowHead.transform.position = correctPositions[stepIndex];
+            Lose();
 
-            Vector2 dir = (correctPositions[stepIndex]-pos).normalized;
-            arrowHead.transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
-            var lin = arrowHead.GetComponent<LineRenderer>();
-            lin.positionCount = 2;
-            lin.SetPosition(0, pos);
-            lin.SetPosition(1, correctPositions[stepIndex] - dir * .1f);
             //arrowHead.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x));
 
             //arrowHead.transform.Rotate(Vector3.forward, Vector2.Angle(pos, correctPositions[stepIndex]));
@@ -122,6 +110,26 @@ public class GameGod : MonoBehaviour {
             InitLevel();
             testing = true;
         }
+    }
+
+    public void Lose() {
+        Vector2 pos = ball.transform.position;
+        hasLost = true;
+        testing = false;
+        lostText.SetActive(true);
+        lostText.GetComponent<TextMeshProUGUI>().text = "Error in Step " + stepIndex + "\n" +
+            "You were off by " + (pos - correctPositions[stepIndex]);
+        arrowHead.SetActive(true);
+        arrowHead.transform.position = correctPositions[stepIndex];
+
+        Vector2 dir = (correctPositions[stepIndex] - pos).normalized;
+        arrowHead.transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+        var lin = arrowHead.GetComponent<LineRenderer>();
+        lin.positionCount = 2;
+        lin.SetPosition(0, pos);
+        lin.SetPosition(1, correctPositions[stepIndex] - dir * .1f);
+        CamControl.me.DeadCam(correctPositions[stepIndex]);
+
     }
     
     public Rule GetCurrentRule(){

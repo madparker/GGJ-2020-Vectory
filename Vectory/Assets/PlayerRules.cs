@@ -38,3 +38,8 @@ public class Lv4 : PlayerRule {
 
 }
 
+public class Lv5 : PlayerRule {
+    //
+
+}
+

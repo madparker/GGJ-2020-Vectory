@@ -13,11 +13,12 @@ public class Rule
     }
 }
 
-public class PlayerRule
-{
-    public virtual Vector2 Step(Vector2 currentPos)
-    {
+public class PlayerRule {
+    public virtual Vector2 Step(Vector2 currentPos, Vector2 input) {
         return Vector2.zero;
+    }
+    public virtual Vector2 Step(Vector2 currentPos) {
+        return Step(currentPos, Vector2.zero);
     }
 }
 

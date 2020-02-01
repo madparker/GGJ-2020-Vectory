@@ -6,16 +6,38 @@ public class CamControl : MonoBehaviour
 {
     public Transform ball;
     public Camera cam;
+    public static CamControl me;
+    private void Awake() {
+        me = this;
+    }
     void Start() {
         cam = Camera.main;
+        
     }
     void Update() {
+        if (GameGod.me.hasLost) {
+            return;
+        }
         var bl = new Vector2(Mathf.Min(-5, ball.position.x - 2f), Mathf.Min(-5, ball.position.y - 2f));
         var tr = new Vector2(Mathf.Max(5, ball.position.x + 2f), Mathf.Max(5f, ball.position.y + 2f));
         cam.orthographicSize = Mathf.Max((tr.y - bl.y) / 2f, ((tr.x-bl.x)/2f) * (9f/16f));
 
         cam.transform.position = (bl + tr) / 2f;
         cam.transform.position -= Vector3.forward * 10f;
-
     }
+
+    public void DeadCam(Vector2 deadPt) {
+        var bl = new Vector2(ball.position.x - 2f,  ball.position.y - 2f);
+        var tr = new Vector2(ball.position.x + 2f, ball.position.y + 2f);
+        bl.x = Mathf.Min(deadPt.x - 2f, bl.x);
+        bl.y = Mathf.Min(deadPt.y - 2f, bl.x);
+        tr.x = Mathf.Max(deadPt.x + 2f, tr.x);
+        tr.y = Mathf.Max(deadPt.y + 2f, tr.y);
+
+        cam.orthographicSize = Mathf.Max((tr.y - bl.y) / 2f, ((tr.x - bl.x) / 2f) * (9f / 16f));
+
+        cam.transform.position = (bl + tr) / 2f;
+        cam.transform.position -= Vector3.forward * 10f;
+    }
+
 }
