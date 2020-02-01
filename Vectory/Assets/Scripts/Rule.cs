@@ -7,9 +7,15 @@ public class Rule
     public string name;
     public int stepNum = 10;
 
-    public virtual Vector2[] GetPositions(Vector2 startPos)
+    public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 inputv, float inputf)
     {
         return null;
+    }
+    public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 input) {
+        return GetPositions(startPos, input, 0f);
+    }
+    public virtual Vector2[] GetPositions(Vector2 startPos, float input) {
+        return GetPositions(startPos, Vector2.zero, input);
     }
 }
 
@@ -23,13 +29,13 @@ public class PlayerRule {
 }
 
 public class MoveRight : Rule {
-    public override Vector2[] GetPositions(Vector2 startPos)
+    public override Vector2[] GetPositions(Vector2 startPos, float input)
     {
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
         {
             posArr[i] = startPos;
-            startPos += Vector2.right;
+            startPos += Vector2.right * input;
         }
         return posArr;
     }
@@ -37,7 +43,7 @@ public class MoveRight : Rule {
 
 public class MoveDiagonalUpLeft : Rule
 {
-    public override Vector2[] GetPositions(Vector2 startPos)
+    public override Vector2[] GetPositions(Vector2 startPos, Vector2 input)
     {
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
@@ -53,7 +59,7 @@ public class MoveDiagonalUpLeft : Rule
 
 public class MoveDiagonalUpLeftOnUnit : Rule
 {
-    public override Vector2[] GetPositions(Vector2 startPos)
+    public override Vector2[] GetPositions(Vector2 startPos, Vector2 input)
     {
         var posArr = new Vector2[stepNum];
         for (int i = 0; i < stepNum; i++)
@@ -72,7 +78,7 @@ public class AccelerateRight : Rule {
         stepNum = 20;
     }
 
-    public override Vector2[] GetPositions(Vector2 startPos) {
+    public override Vector2[] GetPositions(Vector2 startPos, float input) {
         var posArr = new Vector2[stepNum];
         var vel = Vector2.zero;
         for (int i = 0; i < stepNum; i++) {
