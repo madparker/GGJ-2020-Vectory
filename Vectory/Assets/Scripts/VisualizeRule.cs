@@ -18,7 +18,8 @@ public class VisualizeRule : MonoBehaviour
 
         Rule currentRule = GameGod.me.GetCurrentRule();
 
-        //ResultingPositions = currentRule.GetPositions(ballTrans.position);
+        GameObject prevHolder = new GameObject();
+        prevHolder.name = "Preview Position Holder";
 
         int i = 1;
         foreach(Vector2 vec in GameGod.me.correctPositions){
@@ -27,6 +28,9 @@ public class VisualizeRule : MonoBehaviour
             position.transform.position = vec;
             position.GetComponentInChildren<TextMeshPro>().text = "" + i;
             i++;
+
+
+            position.transform.SetParent(prevHolder.transform);
         }
     }
 
