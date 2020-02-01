@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class GameGod : MonoBehaviour {
 
+
+
     public Transform ball;
 
     public Rule[] ruleArr;
     public PlayerRule[] playerRuleArr;
 
-    public int ruleIndex;
+    public int ruleIndex = 0;
 
     public static GameGod me;
 
@@ -22,7 +24,8 @@ public class GameGod : MonoBehaviour {
     int stepIndex = 0;
 
     bool testing;
-    float testTimer, testRate;
+    float testTimer; 
+    public float testRate = 0.1f;
 
     public void Awake() {
         if (me != null) {
@@ -31,12 +34,12 @@ public class GameGod : MonoBehaviour {
             return;
         }
         me = this;
+        ruleArr = new Rule[3] 
+            { new MoveRightRule(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit()};
+        playerRuleArr = new PlayerRule[3] 
+            { new Lvl1(), new Lv2(), new Lv3() };
+        InitLevel();
 
-        ruleArr = new Rule[1] { new MoveRightRule() };
-        playerRuleArr = new PlayerRule[1] { new Lvl1() };
-        ruleIndex = 0;
-        correctPositions = ruleArr[ruleIndex].GetPositions(ball.transform.position);
-        testRate = .1f;
     }
 
     void Start() {
@@ -62,14 +65,39 @@ public class GameGod : MonoBehaviour {
         ball.transform.position = pos;
         stepIndex++;
         if (stepIndex >= stepNum) {
-            if (!hasLost) winText.SetActive(true);
+            if (!hasLost)
+            {
+                winText.SetActive(true);
+                testing = false;
+
+                Invoke("NextLevel", 0.1f);
+
+                //NextLevel();
+
+            }
         } else if (pos != correctPositions[stepIndex]) {
             hasLost = true;
             lostText.SetActive(true);
         }
 
     }
+    public void InitLevel(){
+        ball.transform.position = Vector2.zero;
+        correctPositions = ruleArr[ruleIndex].GetPositions(ball.transform.position);
+        winText.SetActive(false);
+        lostText.SetActive(false);
+        VisualizeRule.me.InitLevel();
+        stepIndex = 0;
+    }
 
+    public void NextLevel(){
+        ruleIndex++;
+        if (ruleIndex < ruleArr.Length)
+        {
+            InitLevel();
+            testing = true;
+        }
+    }
     
     public Rule GetCurrentRule(){
         return ruleArr[ruleIndex];

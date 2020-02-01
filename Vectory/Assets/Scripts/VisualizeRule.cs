@@ -11,18 +11,38 @@ public class VisualizeRule : MonoBehaviour
 
     public GameObject ResultUI;
 
+    public static VisualizeRule me;
+
+    GameObject prevHolder;
+
+    private void Awake()
+    {
+        if (me != null)
+        {
+            Destroy(this);
+        }
+
+        me = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         ballTrans = GameObject.Find("Ball").transform;
 
-        Rule currentRule = GameGod.me.GetCurrentRule();
+        InitLevel();
+    }
 
-        GameObject prevHolder = new GameObject();
+    public void InitLevel(){
+
+        Destroy(prevHolder);
+        prevHolder = new GameObject();
+
         prevHolder.name = "Preview Position Holder";
 
         int i = 1;
-        foreach(Vector2 vec in GameGod.me.correctPositions){
+        foreach (Vector2 vec in GameGod.me.correctPositions)
+        {
             GameObject position =
                 Instantiate<GameObject>(Resources.Load<GameObject>("UI/PreviewPosition"));
             position.transform.position = vec;

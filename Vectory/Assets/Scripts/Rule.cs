@@ -13,7 +13,7 @@ public class Rule
 
 public class PlayerRule
 {
-    public virtual Vector2 Step(Vector2 startPos)
+    public virtual Vector2 Step(Vector2 currentPos)
     {
         return Vector2.zero;
     }
@@ -29,6 +29,41 @@ public class MoveRightRule : Rule
         {
             posArr[i] = startPos;
             startPos += Vector2.right;
+        }
+        return posArr;
+    }
+}
+
+public class MoveDiagonalUpLeft : Rule
+{
+    public override Vector2[] GetPositions(Vector2 startPos)
+    {
+        var stepNum = GameGod.stepNum;
+        var posArr = new Vector2[stepNum];
+        for (int i = 0; i < stepNum; i++)
+        {
+            posArr[i] = startPos;
+            startPos += Vector2.left;
+            startPos += Vector2.up;
+        }
+        return posArr;
+    }
+}
+
+
+public class MoveDiagonalUpLeftOnUnit : Rule
+{
+    public override Vector2[] GetPositions(Vector2 startPos)
+    {
+        var stepNum = GameGod.stepNum;
+        var posArr = new Vector2[stepNum];
+        for (int i = 0; i < stepNum; i++)
+        {
+            posArr[i] = startPos;
+
+            Vector2 newDir = new Vector2(-1, 1).normalized;
+
+            startPos += newDir;
         }
         return posArr;
     }
