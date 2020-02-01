@@ -8,7 +8,7 @@ public class GameGod : MonoBehaviour {
 
     public Rule[] ruleArr;
 
-    public Rule currentRule;
+    public int ruleIndex;
 
     public static GameGod me;
     public void Awake() {
@@ -18,18 +18,21 @@ public class GameGod : MonoBehaviour {
             return;
         }
         me = this;
+
+        ruleArr = new Rule[1] { new MoveRightRule() };
+        ruleIndex = 0;
     }
 
     void Start() {
-        ruleArr = new Rule[1]{new MoveRightRule()};
-        currentRule = ruleArr[0];
     }
 
     void Update() {
         
     }
     
-
+    public Rule GetCurrentRule(){
+        return ruleArr[ruleIndex];
+    }
 
 }
 
