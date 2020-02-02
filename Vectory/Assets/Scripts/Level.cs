@@ -32,7 +32,11 @@ public abstract class Level {
             shapes[i].transform.position = shapes[i].startPos;
         }
     }
-
+    public void CleanUp() {
+        for (int i = 0; i < shapes.Length; i++) {
+            GameObject.Destroy(shapes[i].transform.gameObject);
+        }
+    }
 
     //TODO: Check for other shapes
     //TODO: pass inputs correctly
@@ -46,7 +50,11 @@ public abstract class Level {
             if (!playerTime) {
                 shape.posArr[stepNum] = shape.transform.position;
             } else {
-                success = success && shape.playerOwned && (Vector2)shape.transform.position == shape.posArr[stepNum-1];
+                if (shape.playerOwned && (Vector2)shape.transform.position != shape.posArr[stepNum - 1]) {
+                    shape.failed = true;
+                    success = false;
+                }
+                
             }
         }
         return success;
@@ -67,7 +75,7 @@ public struct ShapeData{
     public Vector2 startPos;
     public Transform transform;
     public Vector2[] posArr;
-    public bool playerOwned;
+    public bool playerOwned, failed;
 
     public ShapeData(shapeType t, Vector2 sPos, Transform trans, int numSteps, bool pOwned=true) {
         type = t;
@@ -75,6 +83,7 @@ public struct ShapeData{
         startPos = sPos;
         transform = trans;
         playerOwned = pOwned;
+        failed = false;
     }
 
 }

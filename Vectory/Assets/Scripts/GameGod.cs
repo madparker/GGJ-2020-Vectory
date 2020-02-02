@@ -103,6 +103,7 @@ public class GameGod : MonoBehaviour {
     }
 
     public void NextLevel(){
+        curLevel.CleanUp();
         levelIndex++;
         if (levelIndex < levelArray.Length)
         {
@@ -127,7 +128,7 @@ public class GameGod : MonoBehaviour {
         lin.positionCount = 2;
         lin.SetPosition(0, pos);
         lin.SetPosition(1, correctPositions[stepIndex] - dir * .1f);
-        CamControl.me.DeadCam(correctPositions[stepIndex]);
+        CamControl.me.DeadCam();
 
     }
 }
