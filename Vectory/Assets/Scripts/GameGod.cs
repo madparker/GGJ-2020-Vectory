@@ -7,7 +7,6 @@ public class GameGod : MonoBehaviour {
     [NamedArray(typeof(ShapeData.shapeType))]
     public Transform[] shapes;
 
-    public Transform ball;
 
     public Level[] levelArray;
     public Level curLevel;
@@ -37,7 +36,7 @@ public class GameGod : MonoBehaviour {
             return;
         }
         me = this;
-        levelArray = new Level[4] { new Level1(), new Level2(), new Level3(), new Level4() };
+        levelArray = new Level[4] { new Level1(), new Level2(), new Level3(), new Level4()};
             //{ new MoveRightOne(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit(), new AccelerateRight()};
         //playerRuleArr = new PlayerRule[4] 
         //    { new Lv1(), new Lv2(), new Lv3(), new Lv4()};

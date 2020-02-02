@@ -37,7 +37,14 @@ public class Lv4 : Rule {
     }
 
 }
+public class Lv5 : Rule
+{
+    public override Vector2 BallMove(Vector2 currentPos) {
+        currentPos.x += currentPos.x * 0.1f;
+        return currentPos;
+    }
 
+}
 //public class Lv5 : Rule {
 
 //    public override Vector2 Step(Vector2 currentPos, Vector2 input)

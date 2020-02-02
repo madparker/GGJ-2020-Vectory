@@ -14,17 +14,19 @@ public abstract class Level {
     public Rule playerRule;
     public Rule designerRule;
 
-    public int numSteps = 5;
+    public int numSteps = 10;
 
     public abstract void Init();
 
 
 
     public void Simulate() {
+        SetRules(false);
         for (int i = 0; i < numSteps; i++) {
             Step(i);
         }
         Reset();
+        SetRules(true);
     }
 
     void Reset() {
@@ -38,6 +40,8 @@ public abstract class Level {
         }
     }
 
+    public abstract void SetRules(bool playerTime);
+
     //TODO: Check for other shapes
     //TODO: pass inputs correctly
     //TODO: return more info
@@ -46,7 +50,7 @@ public abstract class Level {
         var success = true;
         for (int i = 0; i < shapes.Length; i++) {
             var shape = shapes[i];
-            shape.transform.position = playerTime && shape.playerOwned ? PlayerBallMove(shape) : DesignerBallMove(shape);
+            shape.transform.position = BallMove(shape);
             if (!playerTime) {
                 shape.posArr[stepNum] = shape.transform.position;
             } else {
@@ -59,8 +63,7 @@ public abstract class Level {
         return success;
     }
 
-    public abstract Vector2 PlayerBallMove(ShapeData shape);
-    public abstract Vector2 DesignerBallMove(ShapeData shape);
+    public abstract Vector2 BallMove(ShapeData shape);
 }
 
 public class ShapeData{
@@ -75,6 +78,7 @@ public class ShapeData{
     public Transform transform;
     public Vector2[] posArr;
     public bool playerOwned, failed;
+    public Rule rule;
 
     public ShapeData(shapeType t, Vector2 sPos, Transform trans, int numSteps, bool pOwned=true) {
         type = t;
@@ -86,6 +90,10 @@ public class ShapeData{
         transform.position = startPos;
     }
 
+    /*public ShapeData Clone() {
+        return new ShapeData(type, startPos, transform, posArr.Length, playerOwned);
+    }*/
+
 }
 
 public class Level1 : Level {
@@ -94,8 +102,7 @@ public class Level1 : Level {
     public override void Init()
     {
         shapePrefabs = GameGod.me.shapes;
-        designerRule = new MoveRightOne();
-        playerRule = new Lv1();
+
 
         shapes = new ShapeData[1];
 
@@ -105,12 +112,17 @@ public class Level1 : Level {
         Simulate();
     }
 
-    public override Vector2 PlayerBallMove(ShapeData shape){
-        return playerRule.BallMove(shape.transform.position);
+    public override void SetRules(bool playerTime) {
+        for (int i = 0; i < shapes.Length; i++) {
+            if (playerTime && shapes[i].playerOwned)
+                shapes[i].rule = new Lv1();
+            else
+                shapes[i].rule = new MoveRightOne();
+        }
     }
 
-    public override Vector2 DesignerBallMove(ShapeData shape){
-        return designerRule.BallMove(shape.transform.position);
+    public override Vector2 BallMove(ShapeData shape) {
+        return shape.rule.BallMove(shape.transform.position);
     }
 }
 
@@ -119,8 +131,6 @@ public class Level2 : Level
 
     public override void Init()
     {
-        designerRule = new MoveDiagonalUpLeft();
-        playerRule = new Lv2();
 
         shapes = new ShapeData[1];
 
@@ -130,15 +140,21 @@ public class Level2 : Level
         Simulate();
     }
 
-    public override Vector2 PlayerBallMove(ShapeData shape)
-    {
-        return playerRule.BallMove(shape.transform.position);
+    public override void SetRules(bool playerTime) {
+        for (int i = 0; i < shapes.Length; i++) {
+            if (playerTime && shapes[i].playerOwned)
+                shapes[i].rule = new Lv2();
+            else
+                shapes[i].rule = new MoveDiagonalUpLeft();
+        }
     }
 
-    public override Vector2 DesignerBallMove(ShapeData shape)
-    {
-        return designerRule.BallMove(shape.transform.position);
+    public override Vector2 BallMove(ShapeData shape) {
+        return shape.rule.BallMove(shape.transform.position);
     }
+
+
+
 }
 
 public class Level3 : Level
@@ -146,8 +162,6 @@ public class Level3 : Level
 
     public override void Init()
     {
-        designerRule = new MoveDiagonalUpLeftOneUnit();
-        playerRule = new Lv3();
 
         shapes = new ShapeData[1];
 
@@ -157,42 +171,44 @@ public class Level3 : Level
         Simulate();
     }
 
-    public override Vector2 PlayerBallMove(ShapeData shape)
-    {
-        return playerRule.BallMove(shape.transform.position);
+    public override void SetRules(bool playerTime) {
+        for (int i = 0; i < shapes.Length; i++) {
+            if (playerTime && shapes[i].playerOwned)
+                shapes[i].rule = new Lv3();
+            else
+                shapes[i].rule = new MoveDiagonalUpLeftOneUnit();
+        }
     }
 
-    public override Vector2 DesignerBallMove(ShapeData shape)
-    {
-        return designerRule.BallMove(shape.transform.position);
+    public override Vector2 BallMove(ShapeData shape) {
+        return shape.rule.BallMove(shape.transform.position);
     }
+
 }
-
-
 public class Level4 : Level
 {
 
-    public override void Init()
-    {
-        designerRule = new MoveDiagonalUpLeftOneUnit();
-        playerRule = new Lv3();
-
-        shapes = new ShapeData[2];
+    public override void Init() {
+        numSteps = 20;
+        shapes = new ShapeData[1];
 
         var bal = ShapeData.shapeType.ball;
         shapes[0] = new ShapeData(bal, Vector2.zero, GameObject.Instantiate(GameGod.me.shapes[(int)bal]), numSteps);
-        shapes[1] = new ShapeData(bal, Vector2.up,   GameObject.Instantiate(GameGod.me.shapes[(int)bal]), numSteps);
 
         Simulate();
     }
 
-    public override Vector2 PlayerBallMove(ShapeData shape)
-    {
-        return playerRule.BallMove(shape.transform.position);
+    public override void SetRules(bool playerTime) {
+        for (int i = 0; i < shapes.Length; i++) {
+            if (playerTime && shapes[i].playerOwned)
+                shapes[i].rule = new Lv4();
+            else
+                shapes[i].rule = new AccelerateRight();
+        }
     }
 
-    public override Vector2 DesignerBallMove(ShapeData shape)
-    {
-        return designerRule.BallMove(shape.transform.position);
+    public override Vector2 BallMove(ShapeData shape) {
+        return shape.rule.BallMove(shape.transform.position);
     }
+
 }

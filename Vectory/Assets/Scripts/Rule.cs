@@ -6,6 +6,8 @@ public class Rule
 {
     public string name;
     public int stepNum = 10;
+    public Vector2 v1;
+    public float f1;
 
     public virtual void Init(){}
 
@@ -87,18 +89,27 @@ public class MoveDiagonalUpLeftOneUnit : Rule
 
 public class AccelerateRight : Rule {
 
-
+    public Vector2 velocity;
     public override void Init() { }
     public override void Randomize() { }
 
-    public AccelerateRight() {
-        stepNum = 20;
-    }
 
-    public override Vector2 BallMove(Vector2 currentPos, float input){
-        var vel = Vector2.zero;
-        vel += Vector2.right * .1f;
-        currentPos += vel;
+    public override Vector2 BallMove(Vector2 currentPos){
+        velocity += Vector2.right * .1f;
+        currentPos += velocity;
         return currentPos;
+    }
+}
+
+public class LerpAway : Rule {
+
+    public Vector2 vel;
+    public override void Init() { }
+    public override void Randomize() { }
+
+
+    public override Vector2 BallMove(Vector2 currentPos) {
+
+        return currentPos + currentPos * .1f;
     }
 }
