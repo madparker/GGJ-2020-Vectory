@@ -2,55 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Rule
+public class Rule
 {
     public string name;
     public int stepNum = 10;
 
-    public abstract void Init();
+    public virtual void Init(){}
 
-    public abstract void Randomize();
+    public virtual void Randomize(){}
 
-    public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 inputv, float inputf)
-    {
-        return null;
+    public virtual Vector2 BallMove(Vector2 currentPos, Vector2 inputV, float inputF){
+        return Vector2.negativeInfinity;
     }
 
-    public virtual Vector2[] GetPositions(Vector2 startPos)
-    {
-        return null;
+    public virtual Vector2 BallMove(Vector2 currentPos, Vector2 inputV) {
+        return BallMove(currentPos, inputV, 0f);
     }
-    public virtual Vector2[] GetPositions(Vector2 startPos, Vector2 input) {
-        return GetPositions(startPos, input, 0f);
+
+    public virtual Vector2 BallMove(Vector2 currentPos, float inputV) {
+        return BallMove(currentPos, Vector2.zero);
     }
-    public virtual Vector2[] GetPositions(Vector2 startPos, float input) {
-        return GetPositions(startPos, Vector2.zero, input);
+
+    public virtual Vector2 BallMove(Vector2 currentPos) {
+        return BallMove(currentPos, Vector2.zero);
     }
 }
 
-public class PlayerRule {
-    public virtual Vector2 Step(Vector2 currentPos, Vector2 input) {
-        return Vector2.zero;
-    }
-    public virtual Vector2 Step(Vector2 currentPos) {
-        return Step(currentPos, Vector2.zero);
+public class MoveRightOne : Rule {
+
+    public override Vector2 BallMove(Vector2 currentPos)
+    {
+        return currentPos += Vector2.right;
     }
 }
 
-public class MoveRight : Rule {
+public class MoveRightSome : Rule
+{
 
     public override void Init() { }
     public override void Randomize() { }
 
-    public override Vector2[] GetPositions(Vector2 startPos, float input)
+    public override Vector2 BallMove(Vector2 currentPos, float input)
     {
-        var posArr = new Vector2[stepNum];
-        for (int i = 0; i < stepNum; i++)
-        {
-            posArr[i] = startPos;
-            startPos += Vector2.right * input;
-        }
-        return posArr;
+        return currentPos += Vector2.right * input;
     }
 }
 
@@ -59,39 +53,27 @@ public class MoveDiagonalUpLeft : Rule
     public override void Init() { }
     public override void Randomize() { }
    
-    public override Vector2[] GetPositions(Vector2 startPos, Vector2 input)
+    public override Vector2 BallMove(Vector2 currentPos, Vector2 input)
     {
+        currentPos += Vector2.left;
+        currentPos += Vector2.up;
 
-        var posArr = new Vector2[stepNum];
-        for (int i = 0; i < stepNum; i++)
-        {
-            posArr[i] = startPos;
-            startPos += Vector2.left;
-            startPos += Vector2.up;
-        }
-        return posArr;
+        return currentPos;
     }
 }
 
 
-public class MoveDiagonalUpLeftOnUnit : Rule
+public class MoveDiagonalUpLeftOneUnit : Rule
 {
 
     public override void Init() { }
     public override void Randomize() { }
 
-    public override Vector2[] GetPositions(Vector2 startPos, Vector2 input)
+    public override Vector2 BallMove(Vector2 currentPos, Vector2 input)
     {
-        var posArr = new Vector2[stepNum];
-        for (int i = 0; i < stepNum; i++)
-        {
-            posArr[i] = startPos;
+        Vector2 newDir = new Vector2(-1, 1).normalized;
 
-            Vector2 newDir = new Vector2(-1, 1).normalized;
-
-            startPos += newDir;
-        }
-        return posArr;
+        return currentPos += newDir;
     }
 }
 
@@ -105,14 +87,10 @@ public class AccelerateRight : Rule {
         stepNum = 20;
     }
 
-    public override Vector2[] GetPositions(Vector2 startPos, float input) {
-        var posArr = new Vector2[stepNum];
+    public override Vector2 BallMove(Vector2 currentPos, float input){
         var vel = Vector2.zero;
-        for (int i = 0; i < stepNum; i++) {
-            posArr[i] = startPos;
-            vel += Vector2.right * .1f;
-            startPos += vel;
-        }
-        return posArr;
+        vel += Vector2.right * .1f;
+        currentPos += vel;
+        return currentPos;
     }
 }
