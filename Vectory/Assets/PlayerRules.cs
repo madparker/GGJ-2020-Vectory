@@ -6,7 +6,7 @@ using UnityEngine;
 public class Lv1 : Rule {
     //Move the ball to the right one unit per step.
     public override Vector2 BallMove(Vector2 currentPos) {
-        return currentPos + Vector2.right;
+        return currentPos + Vector2.up;
     }
 
 }

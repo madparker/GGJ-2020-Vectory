@@ -48,6 +48,8 @@ public class CamControl : MonoBehaviour
         for (int i = 0; i < GameGod.me.curLevel.shapes.Length; i++) {
             if (!GameGod.me.curLevel.shapes[i].failed) continue;
 
+            print("FAILED");
+
             var shapPos = GameGod.me.curLevel.shapes[i].transform.position;
 
             bl.x = Mathf.Min(shapPos.x - 2f, bl.x);

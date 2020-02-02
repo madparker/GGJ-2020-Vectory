@@ -54,7 +54,6 @@ public abstract class Level {
                     shape.failed = true;
                     success = false;
                 }
-                
             }
         }
         return success;
@@ -64,7 +63,7 @@ public abstract class Level {
     public abstract Vector2 DesignerBallMove(ShapeData shape);
 }
 
-public struct ShapeData{
+public class ShapeData{
 
     public enum shapeType
     {
@@ -149,20 +148,21 @@ public class Level3 : Level
         designerRule = new MoveDiagonalUpLeftOneUnit();
         playerRule = new Lv3();
 
-        ShapeData sd = new ShapeData();
-        sd.type = ShapeData.shapeType.ball;
-        sd.startPos = Vector2.zero;
+        shapes = new ShapeData[1];
 
-        shapes = new ShapeData[1] { sd };
+        var bal = ShapeData.shapeType.ball;
+        shapes[0] = new ShapeData(bal, Vector2.zero, GameObject.Instantiate(GameGod.me.shapes[(int)bal]), numSteps);
+
+        Simulate();
     }
 
     public override Vector2 PlayerBallMove(ShapeData shape)
     {
-        return playerRule.BallMove(vectorInputs[0]);
+        return playerRule.BallMove(shape.transform.position);
     }
 
     public override Vector2 DesignerBallMove(ShapeData shape)
     {
-        return designerRule.BallMove(vectorInputs[0]);
+        return designerRule.BallMove(shape.transform.position);
     }
 }
