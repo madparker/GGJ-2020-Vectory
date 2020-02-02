@@ -61,7 +61,7 @@ public class MoveDiagonalUpLeft : Rule
     public override void Init() { }
     public override void Randomize() { }
    
-    public override Vector2 BallMove(Vector2 currentPos, Vector2 input)
+    public override Vector2 BallMove(Vector2 currentPos)
     {
         currentPos += Vector2.left;
         currentPos += Vector2.up;
