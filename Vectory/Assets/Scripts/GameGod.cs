@@ -64,6 +64,10 @@ public class GameGod : MonoBehaviour {
     }
 
     public void Step() {
+
+        levelArray[levelIndex].vectorInputs[0] = ball.transform.position;
+
+
         if (hasWon)
             return;
         var pos = levelArray[levelIndex].Step(ball.transform.position, true);
@@ -92,6 +96,8 @@ public class GameGod : MonoBehaviour {
     }
     public void InitLevel(){
         ball.transform.position = Vector2.zero;
+
+        levelArray[levelIndex].vectorInputs.Add(ball.transform.position);
 
         levelArray[levelIndex].Init();
 

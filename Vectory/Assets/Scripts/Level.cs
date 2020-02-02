@@ -4,15 +4,13 @@ using UnityEngine;
 
 public abstract class Level
 {
-    public enum inputKeys
-    {
-        startPos = 0
-    }
-
     public const string DICT_START_POS = "StartPos";
 
-    public List<float> floatInputs;
-    public List<Vector2> vectorInputs;
+    public List<string> floatLabels = new List<string>();
+    public List<string> vectorLabels = new List<string>();
+
+    public List<float> floatInputs = new List<float>();
+    public List<Vector2> vectorInputs = new List<Vector2>();
 
     public ShapeData[] shapes;
 
@@ -35,17 +33,24 @@ public abstract class Level
         return result;
     }
 
+    //TODO: Check for other shapes
+    //TODO: pass inputs correctly
+    //TODO: return more info
+
     public Vector2 Step(Vector3 pos, bool playerTime)
     {
-        Vector2 ballPosition = playerRule.BallMove(pos);//vectorInputs[(int)inputKeys.startPos]);
+        Vector2 ballPosition = PlayerBallMove();//vectorInputs[(int)inputKeys.startPos]);
 
         if (playerTime && ballPosition == Vector2.negativeInfinity)
         {
-            ballPosition = designerRule.BallMove(pos);
+            ballPosition = DesignerBallMove();
         }
 
         return ballPosition;
     }
+
+    public abstract Vector2 PlayerBallMove();
+    public abstract Vector2 DesignerBallMove();
 }
 
 public struct ShapeData{
@@ -62,7 +67,8 @@ public struct ShapeData{
 
 public class Level1 : Level {
 
-    public override void Init(){
+    public override void Init()
+    {
         designerRule = new MoveRightOne();
         playerRule = new Lv1();
 
@@ -71,6 +77,14 @@ public class Level1 : Level {
         sd.startPos = Vector2.zero;
 
         shapes = new ShapeData[1] { sd};
+    }
+
+    public override Vector2 PlayerBallMove(){
+        return playerRule.BallMove(vectorInputs[0]);
+    }
+
+    public override Vector2 DesignerBallMove(){
+        return designerRule.BallMove(vectorInputs[0]);
     }
 }
 
@@ -88,6 +102,16 @@ public class Level2 : Level
 
         shapes = new ShapeData[1] { sd };
     }
+
+    public override Vector2 PlayerBallMove()
+    {
+        return playerRule.BallMove(vectorInputs[0]);
+    }
+
+    public override Vector2 DesignerBallMove()
+    {
+        return designerRule.BallMove(vectorInputs[0]);
+    }
 }
 
 public class Level3 : Level
@@ -103,5 +127,15 @@ public class Level3 : Level
         sd.startPos = Vector2.zero;
 
         shapes = new ShapeData[1] { sd };
+    }
+
+    public override Vector2 PlayerBallMove()
+    {
+        return playerRule.BallMove(vectorInputs[0]);
+    }
+
+    public override Vector2 DesignerBallMove()
+    {
+        return designerRule.BallMove(vectorInputs[0]);
     }
 }
