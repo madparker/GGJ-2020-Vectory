@@ -4,17 +4,48 @@ using UnityEngine;
 
 public abstract class Level
 {
-    public Dictionary<string, float> floatInputs;
-    public Dictionary<string, Vector2> vectorInputs;
+    public enum inputKeys
+    {
+        startPos = 0
+    }
+
+    public const string DICT_START_POS = "StartPos";
+
+    public List<float> floatInputs;
+    public List<Vector2> vectorInputs;
 
     public ShapeData[] shapes;
 
-    public Rule SimRule; // handles all NPCs
+    public Rule playerRule;
+    public Rule designerRule;
 
-    public Rule playerBallRule, playerRecRule, playerTriRule;
-    public Rule desBallRule, desRecRule, desTriRule;
+    public int numSteps = 5;
 
-    public abstract void Step();
+    public abstract void Init();
+
+    public Vector2[] GetPositions(Vector2 position){
+        Vector2[] result = new Vector2[numSteps];
+
+        result[0] = position;
+
+        for (int i = 1; i < result.Length; i++){
+            result[i] = Step(result[i - 1], false);
+        }
+
+        return result;
+    }
+
+    public Vector2 Step(Vector3 pos, bool playerTime)
+    {
+        Vector2 ballPosition = playerRule.BallMove(pos);//vectorInputs[(int)inputKeys.startPos]);
+
+        if (playerTime && ballPosition == Vector2.negativeInfinity)
+        {
+            ballPosition = designerRule.BallMove(pos);
+        }
+
+        return ballPosition;
+    }
 }
 
 public struct ShapeData{
@@ -31,8 +62,8 @@ public struct ShapeData{
 
 public class Level1 : Level {
 
-    public Level1(){
-        desginerRule = new MoveRightOne();
+    public override void Init(){
+        designerRule = new MoveRightOne();
         playerRule = new Lv1();
 
         ShapeData sd = new ShapeData();
@@ -41,19 +72,36 @@ public class Level1 : Level {
 
         shapes = new ShapeData[1] { sd};
     }
+}
 
-    public
+public class Level2 : Level
+{
 
-    public override void Step(bool playerTime){
-        for (int i = 0; i < (int)ShapeData.shapeType.length; i++)
-        {
-            if (playerTime && playerRules[i] != null){
-                //run player version of rule
-            } else {
-                //run desginer version of rule if it exists
-            }
+    public override void Init()
+    {
+        designerRule = new MoveDiagonalUpLeft();
+        playerRule = new Lv2();
 
-        }
-        //playerRule.Step(shapes[0].transform.position);
+        ShapeData sd = new ShapeData();
+        sd.type = ShapeData.shapeType.ball;
+        sd.startPos = Vector2.zero;
+
+        shapes = new ShapeData[1] { sd };
+    }
+}
+
+public class Level3 : Level
+{
+
+    public override void Init()
+    {
+        designerRule = new MoveDiagonalUpLeftOneUnit();
+        playerRule = new Lv3();
+
+        ShapeData sd = new ShapeData();
+        sd.type = ShapeData.shapeType.ball;
+        sd.startPos = Vector2.zero;
+
+        shapes = new ShapeData[1] { sd };
     }
 }

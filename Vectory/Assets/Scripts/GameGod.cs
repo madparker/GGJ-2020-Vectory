@@ -10,9 +10,8 @@ public class GameGod : MonoBehaviour {
     public Transform ball;
 
     public Level[] levelArray;
-    public PlayerRule[] playerRuleArr;
 
-    public int ruleIndex = 0;
+    public int levelIndex = 0;
 
     public static GameGod me;
 
@@ -37,10 +36,10 @@ public class GameGod : MonoBehaviour {
             return;
         }
         me = this;
-        levelArray = new Level[1] { };
+        levelArray = new Level[3] { new Level1(), new Level2(), new Level3() };
             //{ new MoveRightOne(), new MoveDiagonalUpLeft(), new MoveDiagonalUpLeftOnUnit(), new AccelerateRight()};
-        playerRuleArr = new PlayerRule[4] 
-            { new Lv1(), new Lv2(), new Lv3(), new Lv4()};
+        //playerRuleArr = new PlayerRule[4] 
+        //    { new Lv1(), new Lv2(), new Lv3(), new Lv4()};
         InitLevel();
 
         arrowHead.SetActive(false);
@@ -67,7 +66,7 @@ public class GameGod : MonoBehaviour {
     public void Step() {
         if (hasWon)
             return;
-        var pos = playerRuleArr[ruleIndex].Step(ball.transform.position);
+        var pos = levelArray[levelIndex].Step(ball.transform.position, true);
         ball.transform.position = pos;
         stepIndex++;
         if (stepIndex == stepNum-1 && pos == correctPositions[stepIndex]) {
@@ -94,23 +93,23 @@ public class GameGod : MonoBehaviour {
     public void InitLevel(){
         ball.transform.position = Vector2.zero;
 
-        levelArray[ruleIndex].Init();
+        levelArray[levelIndex].Init();
 
-        print(levelArray[ruleIndex]);
+        print(levelArray[levelIndex]);
 
-        correctPositions = levelArray[ruleIndex].GetPositions(ball.transform.position);
+        correctPositions = levelArray[levelIndex].GetPositions(ball.transform.position);
         winText.SetActive(false);
         lostText.SetActive(false);
         VisualizeRule.me.InitLevel();
         stepIndex = 0;
         hasWon = false;
         hasLost = false;
-        stepNum = levelArray[ruleIndex].stepNum;
+        stepNum = levelArray[levelIndex].numSteps;
     }
 
     public void NextLevel(){
-        ruleIndex++;
-        if (ruleIndex < levelArray.Length)
+        levelIndex++;
+        if (levelIndex < levelArray.Length)
         {
             InitLevel();
             testing = true;
