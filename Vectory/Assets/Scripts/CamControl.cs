@@ -18,6 +18,7 @@ public class CamControl : MonoBehaviour
         if (GameGod.me.hasLost) {
             return;
         }
+        return;
         var bl = new Vector2(Mathf.Min(-5, ball.position.x - 2f), Mathf.Min(-5, ball.position.y - 2f));
         var tr = new Vector2(Mathf.Max(5, ball.position.x + 2f), Mathf.Max(5f, ball.position.y + 2f));
         cam.orthographicSize = Mathf.Max((tr.y - bl.y) / 2f, ((tr.x-bl.x)/2f) * (9f/16f));
@@ -27,6 +28,7 @@ public class CamControl : MonoBehaviour
     }
 
     public void DeadCam(Vector2 deadPt) {
+        return;
         var bl = new Vector2(ball.position.x - 2f,  ball.position.y - 2f);
         var tr = new Vector2(ball.position.x + 2f, ball.position.y + 2f);
         bl.x = Mathf.Min(deadPt.x - 2f, bl.x);

@@ -4,12 +4,13 @@ using UnityEngine;
 using TMPro;
 
 public class GameGod : MonoBehaviour {
-
-
+    [NamedArray(typeof(ShapeData.shapeType))]
+    public Transform[] shapes;
 
     public Transform ball;
 
     public Level[] levelArray;
+    public Level curLevel;
 
     public int levelIndex = 0;
 
@@ -65,45 +66,33 @@ public class GameGod : MonoBehaviour {
 
     public void Step() {
 
-        levelArray[levelIndex].vectorInputs[0] = ball.transform.position;
-
-
         if (hasWon)
             return;
-        var pos = levelArray[levelIndex].Step(ball.transform.position, true);
-        ball.transform.position = pos;
+
         stepIndex++;
-        if (stepIndex == stepNum-1 && pos == correctPositions[stepIndex]) {
+        var success = curLevel.Step(stepIndex, true);
+        if (stepIndex == stepNum && success) {
             if (!hasLost)
             {
                 winText.SetActive(true);
                 hasWon = true;
                 testing = false;
 
-                Invoke("NextLevel", 0.1f);
-
-                //NextLevel();
+                Invoke("NextLevel", 1f);
 
             }
-        } else if (pos != correctPositions[stepIndex]) {
+        } else if (!success) {
             Lose();
-
-            //arrowHead.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x));
-
-            //arrowHead.transform.Rotate(Vector3.forward, Vector2.Angle(pos, correctPositions[stepIndex]));
         }
 
     }
     public void InitLevel(){
-        ball.transform.position = Vector2.zero;
-
-        levelArray[levelIndex].vectorInputs.Add(ball.transform.position);
-
-        levelArray[levelIndex].Init();
+        curLevel = levelArray[levelIndex];
+        curLevel.Init();
 
         print(levelArray[levelIndex]);
 
-        correctPositions = levelArray[levelIndex].GetPositions(ball.transform.position);
+        correctPositions = curLevel.shapes[0].posArr;
         winText.SetActive(false);
         lostText.SetActive(false);
         VisualizeRule.me.InitLevel();
@@ -123,7 +112,7 @@ public class GameGod : MonoBehaviour {
     }
 
     public void Lose() {
-        Vector2 pos = ball.transform.position;
+        Vector2 pos = curLevel.shapes[0].transform.position;
         hasLost = true;
         testing = false;
         lostText.SetActive(true);

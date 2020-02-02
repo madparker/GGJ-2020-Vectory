@@ -5,9 +5,6 @@ using TMPro;
 
 public class VisualizeRule : MonoBehaviour
 {
-    public Transform ballTrans;
-
-    //public Vector2[] ResultingPositions;
 
     public GameObject ResultUI;
 
@@ -28,7 +25,6 @@ public class VisualizeRule : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ballTrans = GameObject.Find("Ball").transform;
 
         InitLevel();
     }
