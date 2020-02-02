@@ -12,19 +12,22 @@ public class Rule
     public virtual void Randomize(){}
 
     public virtual Vector2 BallMove(Vector2 currentPos, Vector2 inputV, float inputF){
-        return BallMove(currentPos, inputV);
+        return Vector2.negativeInfinity;
     }
 
-    public virtual Vector2 BallMove(Vector2 currentPos, Vector2 inputV) {
-        return BallMove(currentPos);
+    public virtual Vector2 BallMove(Vector2 currentPos, Vector2 inputV)
+    {
+        return Vector2.negativeInfinity;
     }
 
-    public virtual Vector2 BallMove(Vector2 currentPos, float inputV) {
-        return BallMove(currentPos);
+    public virtual Vector2 BallMove(Vector2 currentPos, float inputV)
+    {
+        return Vector2.negativeInfinity;
     }
 
-    public virtual Vector2 BallMove(Vector2 currentPos) {
-        return BallMove();
+    public virtual Vector2 BallMove(Vector2 currentPos)
+    {
+        return Vector2.negativeInfinity;
     }
 
     public virtual Vector2 BallMove()
