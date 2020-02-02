@@ -25,7 +25,6 @@ public class VisualizeRule : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         InitLevel();
     }
 
@@ -36,22 +35,24 @@ public class VisualizeRule : MonoBehaviour
 
         prevHolder.name = "Preview Position Holder";
 
-        int i = 1;
-
-
         print(GameGod.me);
         print(GameGod.me.correctPositions);
 
-        foreach (Vector2 vec in GameGod.me.correctPositions)
+        ShapeData[] shapes = GameGod.me.curLevel.shapes;
+
+        foreach (ShapeData shape in shapes)
         {
-            GameObject position =
-                Instantiate<GameObject>(Resources.Load<GameObject>("UI/PreviewPosition"));
-            position.transform.position = vec;
-            position.GetComponentInChildren<TextMeshPro>().text = "" + i;
-            i++;
+            for (int i = 0; i < shape.posArr.Length; i++)
+            {
+                var vec = shape.posArr[i];
 
-
-            position.transform.SetParent(prevHolder.transform);
+                GameObject position =
+                    Instantiate<GameObject>(Resources.Load<GameObject>("UI/PreviewPosition"));
+                position.transform.position = vec;
+                position.GetComponentInChildren<TextMeshPro>().text = "" + i;
+              
+                position.transform.SetParent(prevHolder.transform);
+            }
         }
     }
 

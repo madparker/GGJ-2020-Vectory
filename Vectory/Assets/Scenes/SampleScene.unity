@@ -466,7 +466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75adebf9d41ba4602be8268b3794a0da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballTrans: {fileID: 0}
   ResultUI: {fileID: 7606072647556557330, guid: 5b0d3290a0537454ebb1f08c0fb5a801,
     type: 3}
 --- !u!4 &276245586
