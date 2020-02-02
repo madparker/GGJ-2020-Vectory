@@ -83,6 +83,7 @@ public class ShapeData{
         transform = trans;
         playerOwned = pOwned;
         failed = false;
+        transform.position = startPos;
     }
 
 }
@@ -152,6 +153,35 @@ public class Level3 : Level
 
         var bal = ShapeData.shapeType.ball;
         shapes[0] = new ShapeData(bal, Vector2.zero, GameObject.Instantiate(GameGod.me.shapes[(int)bal]), numSteps);
+
+        Simulate();
+    }
+
+    public override Vector2 PlayerBallMove(ShapeData shape)
+    {
+        return playerRule.BallMove(shape.transform.position);
+    }
+
+    public override Vector2 DesignerBallMove(ShapeData shape)
+    {
+        return designerRule.BallMove(shape.transform.position);
+    }
+}
+
+
+public class Level4 : Level
+{
+
+    public override void Init()
+    {
+        designerRule = new MoveDiagonalUpLeftOneUnit();
+        playerRule = new Lv3();
+
+        shapes = new ShapeData[2];
+
+        var bal = ShapeData.shapeType.ball;
+        shapes[0] = new ShapeData(bal, Vector2.zero, GameObject.Instantiate(GameGod.me.shapes[(int)bal]), numSteps);
+        shapes[1] = new ShapeData(bal, Vector2.up,   GameObject.Instantiate(GameGod.me.shapes[(int)bal]), numSteps);
 
         Simulate();
     }

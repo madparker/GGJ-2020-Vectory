@@ -77,7 +77,7 @@ public class MoveDiagonalUpLeftOneUnit : Rule
     public override void Init() { }
     public override void Randomize() { }
 
-    public override Vector2 BallMove(Vector2 currentPos, Vector2 input)
+    public override Vector2 BallMove(Vector2 currentPos)
     {
         Vector2 newDir = new Vector2(-1, 1).normalized;
 
